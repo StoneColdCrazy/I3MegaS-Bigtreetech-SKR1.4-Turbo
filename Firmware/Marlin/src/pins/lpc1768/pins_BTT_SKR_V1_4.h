@@ -40,9 +40,18 @@
 //
 // Limit Switches
 //
-#define X_STOP_PIN         P1_29
-#define Y_STOP_PIN         P1_28
-#define Z_STOP_PIN         P1_27
+//#define X_STOP_PIN         P1_29
+//#define Y_STOP_PIN         P1_28
+//#define Z_STOP_PIN         P1_27
+
+// Limit Switches
+//
+#define X_MIN_PIN         P1_29
+#define X_MAX_PIN         P1_26
+#define Y_MIN_PIN         P1_28
+#define Y_MAX_PIN         P1_25
+#define Z_MIN_PIN         P1_27
+#define Z_MAX_PIN         P1_00
 
 //
 // Servos
@@ -56,11 +65,13 @@
   #define Z_MIN_PROBE_PIN  P0_10
 #endif
 
+
+
 //
 // Filament Runout Sensor
 //
-#define FIL_RUNOUT_PIN     P1_26
-#define FIL_RUNOUT2_PIN    P1_25
+//#define FIL_RUNOUT_PIN     P1_26
+//#define FIL_RUNOUT2_PIN    P1_25
 
 //
 // Neopixel LED
@@ -279,5 +290,4 @@
  *   P0_27  (57) (Open collector)
  *   P0_28  (58) (Open collector)
  */
-
 

@@ -181,6 +181,10 @@
   #include "libs/L6470/L6470_Marlin.h"
 #endif
 
+#if ENABLED(ANYCUBIC_TFT_MODEL)
+  #include "lcd/anycubic_TFT.h"
+#endif
+
 const char NUL_STR[] PROGMEM = "",
            G28_STR[] PROGMEM = "G28",
            M21_STR[] PROGMEM = "M21",
@@ -435,6 +439,10 @@ void manage_inactivity(const bool ignore_stepper_queue/*=false*/) {
     runout.run();
   #endif
 
+  #if ENABLED(ANYCUBIC_TFT_MODEL) && ENABLED(ANYCUBIC_FILAMENT_RUNOUT_SENSOR)
+    AnycubicTFT.FilamentRunout();
+  #endif
+
   if (queue.length < BUFSIZE) queue.get_available_commands();
 
   const millis_t ms = millis();
@@ -653,6 +661,10 @@ void idle(
     max7219.idle_tasks();
   #endif
 
+  #ifdef ANYCUBIC_TFT_MODEL
+    AnycubicTFT.CommandScan();
+  #endif
+
   ui.update();
 
   #if ENABLED(HOST_KEEPALIVE_FEATURE)
@@ -728,6 +740,10 @@ void kill(PGM_P const lcd_error/*=nullptr*/, PGM_P const lcd_component/*=nullptr
   #else
     UNUSED(lcd_error);
     UNUSED(lcd_component);
+  #endif
+
+  #ifdef ANYCUBIC_TFT_MODEL
+    AnycubicTFT.KillTFT();
   #endif
 
   #ifdef ACTION_ON_KILL
@@ -886,6 +902,10 @@ void setup() {
 
   SERIAL_ECHOLNPGM("start");
   SERIAL_ECHO_START();
+
+  #ifdef ANYCUBIC_TFT_MODEL
+    AnycubicTFT.Setup();
+  #endif
 
   #if TMC_HAS_SPI
     #if DISABLED(TMC_USE_SW_SPI)
@@ -1141,5 +1161,9 @@ void loop() {
     queue.advance();
 
     endstops.event_handler();
+
+    #ifdef ANYCUBIC_TFT_MODEL
+      AnycubicTFT.CommandScan();
+    #endif
   }
 }

@@ -493,11 +493,11 @@
   #endif
 #endif
 
-//#define Z_DUAL_STEPPER_DRIVERS
+#define Z_DUAL_STEPPER_DRIVERS
 #if ENABLED(Z_DUAL_STEPPER_DRIVERS)
-  //#define Z_DUAL_ENDSTOPS
+  #define Z_DUAL_ENDSTOPS
   #if ENABLED(Z_DUAL_ENDSTOPS)
-    #define Z2_USE_ENDSTOP _XMAX_
+    #define Z2_USE_ENDSTOP _ZMAX_
     #define Z_DUAL_ENDSTOPS_ADJUSTMENT  0
   #endif
 #endif
@@ -2162,7 +2162,7 @@
    * Enable M122 debugging command for TMC stepper drivers.
    * M122 S0/1 will enable continous reporting.
    */
-  //#define TMC_DEBUG
+  #define TMC_DEBUG
 
   /**
    * You can set your own advanced settings by filling in predefined functions.
