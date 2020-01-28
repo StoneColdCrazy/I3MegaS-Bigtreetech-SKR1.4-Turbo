@@ -112,7 +112,7 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-#define SERIAL_PORT_2 0
+//#define SERIAL_PORT_2 0
 
 /**
  * This setting determines the communication speed of the printer.
@@ -2261,4 +2261,4 @@
 #define ANYCUBIC_TFT_MODEL
 #define ANYCUBIC_FILAMENT_RUNOUT_SENSOR
 #define ANYCUBIC_TFT_DEBUG
-#define ANYCUBIC_TFT_SERIAL     Serial2
+#define ANYCUBIC_TFT_SERIAL     Serial

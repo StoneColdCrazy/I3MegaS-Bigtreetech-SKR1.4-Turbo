@@ -41,37 +41,27 @@ int inbound_count;
  */
 void write_to_lcd_PROTOCOL(unsigned int value) {
   LCD_SERIAL.write(value);
-#ifdef ANYCUBIC_TFT_DEBUG
-  DEBUG_ECHO("Write to lcd : ");
-  DEBUG_ECHO(value);
-  DEBUG_ECHOLN();
-#endif
 }
 
 /**
  * Write direct to Anycubic LCD
  */
 void write_to_lcd_PGM(PGM_P const message) {
-  LCD_SERIAL.Print::write(message, sizeof(message));
-#ifdef ANYCUBIC_TFT_DEBUG
-  DEBUG_ECHO("Write to lcd : ");
-  DEBUG_ECHO(message);
-  DEBUG_ECHOLN();
-#endif
+  LCD_SERIAL.write((char*)message, strlen(message));
 }
 
 /**
  * Write line break to Anycubic LCD
  */
 void write_to_lcd_ENTER() {
-  write_to_lcd_PGM(PSTR("\r\n"));
+  write_to_lcd_PGM("\r\n");
 }
 
 /**
  * Write space to Anycubic LCD
  */
 void write_to_lcd_SPACE() {
-  write_to_lcd_PGM(PSTR(" "));
+  write_to_lcd_PGM(" ");
 }
 
 /**
@@ -81,6 +71,8 @@ void write_to_lcd_NPGM(PGM_P const message) {
   write_to_lcd_PGM(message);
   write_to_lcd_ENTER();
 }
+
+// M111 S7
 
 
 /**
@@ -155,14 +147,7 @@ void parse_lcd_byte(byte b) {
   if (b == '\n' || b == '\r') {
     if (inbound_count > 0) {
       inbound_buffer[inbound_count] = 0;
-
-
-
-#ifdef ANYCUBIC_TFT_DEBUG
-      DEBUG_ECHO("Recv from lcd : ");
-      DEBUG_ECHO(inbound_buffer);
-      DEBUG_ECHOLN();
-#endif
+      process_lcd_command(inbound_buffer);
     }
     inbound_count = 0;
 
@@ -182,9 +167,9 @@ namespace ExtUI {
   void onStartup() {
     inbound_count = 0;
     LCD_SERIAL.begin(115200);
-    write_to_lcd_NPGM(PSTR("J17"));      // J17 Main board reset
+    write_to_lcd_NPGM("J17");      // J17 Main board reset
     delay(10);
-    write_to_lcd_NPGM(PSTR("J12"));      // J12 Ready
+    write_to_lcd_NPGM("J12");      // J12 Ready
   }
 
   /**
@@ -213,6 +198,24 @@ namespace ExtUI {
   void onLoadSettings(const char*) {}
   void onConfigurationStoreWritten(bool) {}
   void onConfigurationStoreRead(bool) {}
+
+
+  #if HAS_LEVELING
+    //bool getLevelingActive();
+    //void setLevelingActive(const bool);
+    ////bool getMeshValid();
+    #if HAS_MESH
+      //bed_mesh_t& getMeshArray();
+      //float getMeshPoint(const xy_uint8_t &pos);
+      //void setMeshPoint(const xy_uint8_t &pos, const float zval);
+      void onMeshUpdate(const int8_t xpos, const int8_t ypos, const float zval) {}
+      //inline void onMeshUpdate(const xy_int8_t &pos, const float zval) { onMeshUpdate(pos.x, pos.y, zval); }
+    #endif
+  #endif
+
+  #if HAS_PID_HEATING
+    void OnPidTuning(const result_t rst) {}
+  #endif
 }
 
 #endif // ANYCUBIC_TFT_MODEL
