@@ -32,11 +32,19 @@
 #endif
 #define MAX_ANY_COMMAND (32 + LONG_FILENAME_LENGTH) * 2
 
+// Track incoming command bytes from the LCD
+int inbound_count;
+
 /**
  * Write direct to Anycubic LCD
  */
 void write_to_lcd_PGM(PGM_P const message) {
   LCD_SERIAL.Print::write(message, sizeof(message));
+#ifdef ANYCUBIC_TFT_DEBUG
+  DEBUG_ECHO("Write to lcd : ");
+  DEBUG_ECHO(message);
+  DEBUG_ECHOLN();
+#endif
 }
 
 /**
@@ -65,6 +73,27 @@ void write_to_lcd_NPGM(PGM_P const message) {
  * Parse incomming LCD bytes
  */
 void parse_lcd_byte(byte b) {
+  static char inbound_buffer[MAX_ANY_COMMAND];
+
+  // A line-ending
+  if (b == '\n' || b == '\r') {
+    if (inbound_count > 0) {
+      inbound_buffer[inbound_count] = 0;
+
+
+      
+#ifdef ANYCUBIC_TFT_DEBUG
+      DEBUG_ECHO("Recv from lcd : ");
+      DEBUG_ECHO(inbound_buffer);
+      DEBUG_ECHOLN();
+#endif
+    }
+    inbound_count = 0;
+
+  // Buffer only if we have enougth space
+  } else if (inbound_count < MAX_ANY_COMMAND - 2) {
+    inbound_buffer[inbound_count++] = b;
+  }
 }
 
 /**
@@ -75,6 +104,7 @@ namespace ExtUI {
    * Initialize Display
    */
   void onStartup() {
+    inbound_count = 0;
     LCD_SERIAL.begin(115200);
     write_to_lcd_NPGM(PSTR("J17"));      // J17 Main board reset
     delay(10);
