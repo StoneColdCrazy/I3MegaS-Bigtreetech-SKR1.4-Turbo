@@ -435,7 +435,6 @@ void manage_inactivity(const bool ignore_stepper_queue/*=false*/) {
     runout.run();
   #endif
 
-
   if (queue.length < BUFSIZE) queue.get_available_commands();
 
   const millis_t ms = millis();
@@ -554,7 +553,7 @@ void manage_inactivity(const bool ignore_stepper_queue/*=false*/) {
         bool oldstatus;
         switch (active_extruder) {
           default:
-          #define _CASE_EN(N) case N: oldstatus = E##N_ENABLE_READ(); enable_E##N(); break;
+          #define _CASE_EN(N) case N: oldstatus = E##N##_ENABLE_READ(); enable_E##N(); break;
           REPEAT(E_STEPPERS, _CASE_EN);
         }
       #endif
