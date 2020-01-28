@@ -19,6 +19,7 @@
 #include "../module/stepper.h"
 #include "../module/motion.h"
 #include "../libs/duration_t.h"
+#include "../libs/numtostr.h"
 #include "../module/printcounter.h"
 #include "../gcode/queue.h"
 
@@ -34,6 +35,18 @@
 
 // Track incoming command bytes from the LCD
 int inbound_count;
+
+/**
+ * Write direct unsigned int to Anycubic LCD
+ */
+void write_to_lcd_PROTOCOL(unsigned int value) {
+  LCD_SERIAL.write(value);
+#ifdef ANYCUBIC_TFT_DEBUG
+  DEBUG_ECHO("Write to lcd : ");
+  DEBUG_ECHO(value);
+  DEBUG_ECHOLN();
+#endif
+}
 
 /**
  * Write direct to Anycubic LCD
@@ -69,6 +82,69 @@ void write_to_lcd_NPGM(PGM_P const message) {
   write_to_lcd_ENTER();
 }
 
+
+/**
+ * Receive a curly brace command and translate to G-code.
+ * Currently {E:0} is not handled. Its function is unknown,
+ * but it occurs during the temp window after a sys build.
+ */
+void process_lcd_command(const char* command) {
+  
+  const char *current = command;
+  byte command_code = *current++;
+  int commandId = -1;
+
+  if (command_code == 'A') {
+    char* pRest;
+    commandId = (int)(strtod(current, &pRest));
+  
+    switch (commandId) {
+      // A0 GET HOTEND TEMP
+      case 0:
+        write_to_lcd_PGM("A0V ");
+        write_to_lcd_PGM(ui8tostr3(uint8_t(thermalManager.degHotend(0) + 0.5)));
+        write_to_lcd_ENTER();
+        break;
+
+      // A1 GET HOTEND TARGET TEMP
+      case 1:
+        write_to_lcd_PGM("A1V ");
+        write_to_lcd_PGM(ui8tostr3(uint8_t(thermalManager.degTargetHotend(0) + 0.5)));
+        write_to_lcd_ENTER();
+        break;
+
+      // A2 GET HOTBED TEMP
+      case 2:
+        write_to_lcd_PGM("A2V ");
+        write_to_lcd_PGM(ui8tostr3(uint8_t(thermalManager.degBed() + 0.5)));
+        write_to_lcd_ENTER();
+
+      // A3 GET HOTBED TARGET TEMP
+      case 3:
+        write_to_lcd_PGM("A3V ");
+        write_to_lcd_PGM(ui8tostr3(uint8_t(thermalManager.degTargetBed() + 0.5)));
+        write_to_lcd_ENTER();
+        break;
+
+      // A4 GET FAN SPEED
+      case 4:
+        unsigned int temp;
+        temp = constrain(thermalManager.fanPercent(thermalManager.fan_speed[0]),0,100);
+        write_to_lcd_PGM("A4V ");
+        write_to_lcd_PROTOCOL(temp);
+        write_to_lcd_ENTER();
+        break;
+
+      // Command code UNKOWN
+      default:
+        DEBUG_ECHOLNPAIR("UNKNOWN COMMAND A", commandId);
+        break;
+    }
+  } else {
+    DEBUG_ECHOLNPAIR("UNKNOWN COMMAND FORMAT ", command);
+  }
+}
+
 /**
  * Parse incomming LCD bytes
  */
@@ -81,7 +157,7 @@ void parse_lcd_byte(byte b) {
       inbound_buffer[inbound_count] = 0;
 
 
-      
+
 #ifdef ANYCUBIC_TFT_DEBUG
       DEBUG_ECHO("Recv from lcd : ");
       DEBUG_ECHO(inbound_buffer);
