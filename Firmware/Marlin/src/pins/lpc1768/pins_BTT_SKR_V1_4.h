@@ -21,42 +21,28 @@
  */
 #pragma once
 
-#define BOARD_INFO_NAME "BIGTREE SKR 1.4"
+#ifndef BOARD_INFO_NAME
+  #define BOARD_INFO_NAME "BIGTREE SKR 1.4"
+#endif
 
 //
-// SD Support
+// SD Connection
 //
 #ifndef SDCARD_CONNECTION
   #define SDCARD_CONNECTION LCD
 #endif
 
-#if SD_CONNECTION_IS(LCD)
-  #define SS_PIN           P0_16
-#endif
-
-// Include common SKR pins
-#include "pins_BTT_SKR.h"
-
-//
-// Limit Switches
-//
-//#define X_STOP_PIN         P1_29
-//#define Y_STOP_PIN         P1_28
-//#define Z_STOP_PIN         P1_27
-
-// Limit Switches
-//
-#define X_MIN_PIN         P1_29
-#define X_MAX_PIN         P1_26
-#define Y_MIN_PIN         P1_28
-#define Y_MAX_PIN         P1_25
-#define Z_MIN_PIN         P1_27
-#define Z_MAX_PIN         P1_00
-
 //
 // Servos
 //
 #define SERVO0_PIN         P2_00
+
+//
+// Limit Switches
+//
+#define X_STOP_PIN         P1_29
+#define Y_STOP_PIN         P1_28
+#define Z_STOP_PIN         P1_27
 
 //
 // Z Probe (when not Z_MIN_PIN)
@@ -65,20 +51,11 @@
   #define Z_MIN_PROBE_PIN  P0_10
 #endif
 
-
-
 //
 // Filament Runout Sensor
 //
-//#define FIL_RUNOUT_PIN     P1_26
-//#define FIL_RUNOUT2_PIN    P1_25
-
-//
-// Neopixel LED
-//
-#ifndef NEOPIXEL_PIN
-  #define NEOPIXEL_PIN     P1_24
-#endif
+#define FIL_RUNOUT_PIN     P1_26
+#define FIL_RUNOUT2_PIN    P1_25
 
 //
 // Power Supply Control
@@ -88,7 +65,7 @@
 #endif
 
 //
-// Backup Power Supply
+// Power Loss Detection
 //
 #ifndef POWER_LOSS_PIN
   #define POWER_LOSS_PIN   P1_00
@@ -125,9 +102,6 @@
   #define E0_CS_PIN        P1_04
 #endif
 
-#undef E1_STEP_PIN // undef pins defined in "pin_BTT_SKR.h"
-#undef E1_DIR_PIN
-#undef E1_ENABLE_PIN
 #define E1_STEP_PIN        P1_15
 #define E1_DIR_PIN         P1_14
 #define E1_ENABLE_PIN      P1_16
@@ -135,10 +109,13 @@
   #define E1_CS_PIN        P1_01
 #endif
 
-#undef TEMP_BED_PIN
-#undef TEMP_1_PIN
-#define TEMP_BED_PIN       P0_25_A2   // A0 (T0) - (67) - TEMP_BED_PIN
 #define TEMP_1_PIN         P0_23_A0   // A2 (T2) - (69) - TEMP_1_PIN
+#define TEMP_BED_PIN       P0_25_A2   // A0 (T0) - (67) - TEMP_BED_PIN
+
+//
+// Include common SKR pins
+//
+#include "pins_BTT_SKR.h"
 
 //
 // Software SPI pins for TMC2130 stepper drivers
@@ -197,6 +174,13 @@
 
   // Reduce baud rate to improve software serial reliability
   #define TMC_BAUD_RATE 19200
+#endif
+
+//
+// SD Connection
+//
+#if SD_CONNECTION_IS(LCD)
+  #define SS_PIN           P0_16
 #endif
 
 /**
@@ -263,10 +247,10 @@
     #else // !FYSETC_MINI_12864
 
       #if ENABLED(MKS_MINI_12864)
-        #define DOGLCD_CS    P1_21
-        #define DOGLCD_A0    P1_22
-        #define DOGLCD_SCK   P0_15
-        #define DOGLCD_MOSI  P0_18
+        #define DOGLCD_CS   P1_21
+        #define DOGLCD_A0   P1_22
+        #define DOGLCD_SCK  P0_15
+        #define DOGLCD_MOSI P0_18
         #define FORCE_SOFT_SPI
       #endif
 
@@ -282,6 +266,12 @@
 
 #endif // HAS_SPI_LCD
 
+//
+// Neopixel LED
+//
+#ifndef NEOPIXEL_PIN
+  #define NEOPIXEL_PIN      P1_24
+#endif
 
 /**
  * Special pins
@@ -290,4 +280,3 @@
  *   P0_27  (57) (Open collector)
  *   P0_28  (58) (Open collector)
  */
-
