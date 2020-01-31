@@ -845,15 +845,15 @@ void process_lcd_command(const char* command) {
               char *commandDataS = isCodeReceived(pRest, 'S');
               char *commandDataD = isCodeReceived(pRest, 'D');
 
-              if(commandDataS != NULL) {
-                write_to_lcd_PGM("A9V ");
-                write_to_lcd_PROTOCOL(ui8tostr3(uint8_t(NOZZLE_TO_PROBE_OFFSET[2] * 100.00 + 0.5)));
-                write_to_lcd_ENTER();
-                DEBUG_ECHOPGM("TFT sending current z-probe offset data... <");
-                DEBUG_ECHOPGM("A9V ");
-                DEBUG_ECHO(ui8tostr3(uint8_t(NOZZLE_TO_PROBE_OFFSET[2] * 100.00 + 0.5)));
-                DEBUG_ECHOLNPGM(">");
-              }
+              //if(commandDataS != NULL) {
+                //write_to_lcd_PGM("A9V ");
+                //write_to_lcd_PROTOCOL(ui8tostr3(uint8_t(NOZZLE_TO_PROBE_OFFSET[2] * 100.00 + 05)));
+                //write_to_lcd_ENTER();
+                //DEBUG_ECHOPGM("TFT sending current z-probe offset data... <");
+                //DEBUG_ECHOPGM("A9V ");
+                //DEBUG_ECHO(ui8tostr3(uint8_t(NOZZLE_TO_PROBE_OFFSET[2] * 100.00 + 0.5)));
+                //DEBUG_ECHOLNPGM(">");
+              //}
               if(commandDataD != NULL) {
                 s_zoffset = (char*)ftostr3(float(strtod(commandDataD, NULL)) / 100.0);
                 sprintf_P(value, PSTR("M851 Z"));
