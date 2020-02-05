@@ -812,7 +812,13 @@ void Endstops::update() {
           #elif NUM_Z_STEPPER_DRIVERS == 3
             PROCESS_TRIPLE_ENDSTOP(Z, Z2, Z3, MIN);
           #else
-            PROCESS_DUAL_ENDSTOP(Z, Z2, MIN);
+            #if ENABLED(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN)
+              if (z_probe_enabled) PROCESS_DUAL_ENDSTOP(Z, Z2, MIN);
+            #elif HAS_CUSTOM_PROBE_PIN
+              if (!z_probe_enabled) PROCESS_DUAL_ENDSTOP(Z, Z2, MIN);
+            #else
+              PROCESS_DUAL_ENDSTOP(Z, Z2, MIN);
+            #endif
           #endif
         #else
           #if ENABLED(Z_MIN_PROBE_USES_Z_MIN_ENDSTOP_PIN)
