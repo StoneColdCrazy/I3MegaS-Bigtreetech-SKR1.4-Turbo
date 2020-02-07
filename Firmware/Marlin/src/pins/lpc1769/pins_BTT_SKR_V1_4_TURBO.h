@@ -28,33 +28,3 @@
 // Include SKR 1.4 pins
 //
 #include "../lpc1768/pins_BTT_SKR_V1_4.h"
-
-//
-// Extra Remaps (XMin and XMax)
-//
-#ifdef ENABLE_XMAX_PIN
-    #define X_MIN_PIN         P1_29
-    #define X_MAX_PIN         P1_26
-    #undef X_STOP_PIN
-    #undef FIL_RUNOUT_PIN
-#endif
-
-//
-// Extra Remaps (YMin and YMax)
-//
-#ifdef ENABLE_YMAX_PIN
-    #define Y_MIN_PIN         P1_28
-    #define Y_MAX_PIN         P1_25
-    #undef Y_STOP_PIN
-    #undef FIL_RUNOUT2_PIN
-#endif
-
-//
-// Extra Remaps (ZMin and ZMax)
-//
-#ifdef ENABLE_ZMAX_PIN
-    #define Z_MIN_PIN         P1_27
-    #define Z_MAX_PIN         P1_00
-    #undef Z_STOP_PIN
-    #undef PS_ON_PIN
-#endif
