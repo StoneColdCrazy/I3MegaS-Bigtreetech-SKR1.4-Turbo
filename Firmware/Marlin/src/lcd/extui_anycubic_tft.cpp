@@ -589,10 +589,10 @@ void process_lcd_command(const char* command) {
             #endif
         ) {
           quickstop_stepper();
-          disable_X();
-          disable_Y();
-          disable_Z();
-          disable_E0();
+          //disable_X();
+          //disable_Y();
+          //disable_Z();
+          //disable_E0();
         }
         write_to_lcd_ENTER();
         break;
