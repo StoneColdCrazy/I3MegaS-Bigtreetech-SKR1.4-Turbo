@@ -112,7 +112,7 @@
  *
  * :[-1, 0, 1, 2, 3, 4, 5, 6, 7]
  */
-//#define SERIAL_PORT_2 0
+#define SERIAL_PORT_2 0
 
 /**
  * This setting determines the communication speed of the printer.
@@ -689,19 +689,19 @@
 #define X_DRIVER_TYPE  TMC2208
 #define Y_DRIVER_TYPE  TMC2208
 #define Z_DRIVER_TYPE  TMC2208
-#define X2_DRIVER_TYPE TMC2208
-#define Y2_DRIVER_TYPE TMC2208
+//#define X2_DRIVER_TYPE TMC2208
+//#define Y2_DRIVER_TYPE TMC2208
 #define Z2_DRIVER_TYPE TMC2208
-#define Z3_DRIVER_TYPE TMC2208
-#define Z4_DRIVER_TYPE TMC2208
+//#define Z3_DRIVER_TYPE TMC2208
+//#define Z4_DRIVER_TYPE TMC2208
 #define E0_DRIVER_TYPE TMC2208
-#define E1_DRIVER_TYPE TMC2208
-#define E2_DRIVER_TYPE TMC2208
-#define E3_DRIVER_TYPE TMC2208
-#define E4_DRIVER_TYPE TMC2208
-#define E5_DRIVER_TYPE TMC2208
-#define E6_DRIVER_TYPE TMC2208
-#define E7_DRIVER_TYPE TMC2208
+//#define E1_DRIVER_TYPE TMC2208
+//#define E2_DRIVER_TYPE TMC2208
+//#define E3_DRIVER_TYPE TMC2208
+//#define E4_DRIVER_TYPE TMC2208
+//#define E5_DRIVER_TYPE TMC2208
+//#define E6_DRIVER_TYPE TMC2208
+//#define E7_DRIVER_TYPE TMC2208
 
 // Enable this feature if all enabled endstop pins are interrupt-capable.
 // This will remove the need to poll the interrupt pins, saving many CPU cycles.
@@ -1144,10 +1144,10 @@
  * For other boards you may need to define FIL_RUNOUT_PIN, FIL_RUNOUT2_PIN, etc.
  * By default the firmware assumes HIGH=FILAMENT PRESENT.
  */
-#define FILAMENT_RUNOUT_SENSOR
+//#define FILAMENT_RUNOUT_SENSOR
 #if ENABLED(FILAMENT_RUNOUT_SENSOR)
   #define NUM_RUNOUT_SENSORS   1     // Number of sensors, up to one per extruder. Define a FIL_RUNOUT#_PIN for each.
-  #define FIL_RUNOUT_INVERTING false // Set to true to invert the logic of the sensor.
+  #define FIL_RUNOUT_INVERTING false  // Set to true to invert the logic of the sensor.
   #define FIL_RUNOUT_PULLUP          // Use internal pullup for filament runout pins.
   //#define FIL_RUNOUT_PULLDOWN      // Use internal pulldown for filament runout pins.
 
@@ -2258,10 +2258,3 @@
 // Allow servo angle to be edited and saved to EEPROM
 //#define EDITABLE_SERVO_ANGLES
 
-
-
-// Enable Anycubic TFT
-#define ANYCUBIC_TFT_MODEL
-#define ANYCUBIC_FILAMENT_RUNOUT_SENSOR
-#define ANYCUBIC_TFT_DEBUG
-#define ANYCUBIC_TFT_SERIAL     Serial
