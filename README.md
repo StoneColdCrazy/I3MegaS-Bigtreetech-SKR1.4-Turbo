@@ -3,7 +3,10 @@ In this repo you find the firmware and all informations to use an Bigtreetech SK
 
 Basic: Marlin 2.02 Release
 
--> Implemented SKR1.4 Turbo Pinout for anycubic (Enable all Endstops)
+-> Implemented SKR1.4 Pinout for anycubic (Enable all Endstops)
 -> Implemented I3 Mega Touch Display
+-> BLTouch enabled
+
+TODO: Stepper driver
 
 
